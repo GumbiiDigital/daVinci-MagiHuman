@@ -1,0 +1,47 @@
+# TikTok/Reels URLs for UGC Baseline Scoring
+# Focus: product reviews, testimonials, talking head, before/after
+# Format: one URL per line. Lines starting with # are comments.
+#
+# INSTRUCTIONS:
+# 1. Open TikTok/Instagram in browser
+# 2. Find viral UGC-style content (product demos, testimonials, talking head)
+# 3. Copy the video URL and paste below
+# 4. Add a comment above each URL describing the content type
+#
+# Dylan: Replace these placeholder categories with real URLs you find.
+# Search TikTok for: "product review", "before and after", "honest review",
+# "trying [product]", "is it worth it", "I tested", "UGC creator"
+#
+# TARGET CONTENT TYPES (match what DaVinci generates):
+# - Talking head testimonial (person speaking to camera about experience)
+# - Product demo/unboxing (hands showing product, person explaining)
+# - Before/after comparison (split screen or sequential)
+# - Hook-style opener ("I can't believe...", "Nobody talks about...")
+# - Emotional confession ("I finally quit...", "This changed my life")
+#
+# EXAMPLE FORMAT (replace with real URLs):
+# --- Talking Head Testimonial ---
+# https://www.tiktok.com/@creator/video/1234567890
+#
+# --- Product Demo ---
+# https://www.tiktok.com/@creator/video/0987654321
+#
+# --- Before/After ---
+# https://www.instagram.com/reel/ABC123/
+#
+# ==========================================================================
+# PASTE REAL URLS BELOW THIS LINE
+# ==========================================================================
+
+# --- Talking Head Testimonials ---
+
+# --- Product Reviews / Demos ---
+
+# --- Before/After Comparisons ---
+
+# --- Hook-Style Openers ---
+
+# --- Emotional / Confession Style ---
+
+# --- Instagram Reels (same content types) ---
+

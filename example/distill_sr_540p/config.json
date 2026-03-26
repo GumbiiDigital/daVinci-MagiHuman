@@ -1,14 +1,18 @@
 {
   "engine_config": {
-    "load": "/home/gumbiidigital/davinci-magihuman/base",
+    "load": "/home/gumbiidigital/davinci-magihuman/distill",
     "cp_size": 1
   },
   "evaluation_config": {
-    "cfg_number": 2,
-    "num_inference_steps": 32,
+    "cfg_number": 1,
+    "num_inference_steps": 8,
     "audio_model_path": "/home/gumbiidigital/davinci-magihuman/externals/stable-audio-open-1.0",
     "txt_model_path": "/home/gumbiidigital/davinci-magihuman/externals/t5gemma-9b-9b-ul2",
     "vae_model_path": "/home/gumbiidigital/davinci-magihuman/externals/Wan2.2-TI2V-5B",
+    "use_sr_model": true,
+    "sr_model_path": "/home/gumbiidigital/davinci-magihuman/540p_sr",
+    "sr_num_inference_steps": 5,
+    "sr_cfg_number": 1,
     "use_turbo_vae": true,
     "student_config_path": "/home/gumbiidigital/davinci-magihuman/turbo_vae/TurboV3-Wan22-TinyShallow_7_7.json",
     "student_ckpt_path": "/home/gumbiidigital/davinci-magihuman/turbo_vae/checkpoint-340000.ckpt"

@@ -394,10 +394,25 @@ def flash_attn_func(query: torch.Tensor, key: torch.Tensor, value: torch.Tensor)
         from flash_attn_interface import flash_attn_func as fa3_flash_attn_func
 
         return fa3_flash_attn_func(query, key, value)
-    else:
+    elif importlib.util.find_spec("flash_attn") is not None:
         from flash_attn.flash_attn_interface import flash_attn_func as fa2_flash_attn_func
 
         return fa2_flash_attn_func(query, key, value)
+    else:
+        # SDPA fallback for architectures without flash-attn (e.g. Blackwell GB10)
+        # flash-attn shape: (batch, seq, heads, head_dim) -> SDPA: (batch, heads, seq, head_dim)
+        q = query.transpose(1, 2)
+        k = key.transpose(1, 2)
+        v = value.transpose(1, 2)
+        # Handle GQA: repeat KV heads to match query heads
+        num_q_heads = q.shape[1]
+        num_kv_heads = k.shape[1]
+        if num_q_heads != num_kv_heads:
+            repeat_factor = num_q_heads // num_kv_heads
+            k = k.repeat_interleave(repeat_factor, dim=1)
+            v = v.repeat_interleave(repeat_factor, dim=1)
+        out = torch.nn.functional.scaled_dot_product_attention(q, k, v)
+        return out.transpose(1, 2)
 
 
 def _split_q_range_with_no_overlap(
@@ -427,20 +442,45 @@ def _flash_attn_with_correction(
     output = torch.zeros_like(query)
     output_lse = torch.zeros((query.shape[0], query.shape[1]), dtype=torch.float32, device=query.device)
 
-    from flash_attn.flash_attn_interface import flash_attn_func
+    _has_fa2 = importlib.util.find_spec("flash_attn") is not None
+
+    if _has_fa2:
+        from flash_attn.flash_attn_interface import flash_attn_func as _fa2_func
 
     for q_range, k_ranges in zip(q_ranges, k_range_list):
         q_start, q_end = q_range
         qo_out, qo_lse = None, None
         for k_range in k_ranges:
             k_start, k_end = k_range
-            cur_qo_out, cur_qo_lse, _ = flash_attn_func(
-                query[q_start:q_end].unsqueeze(0),
-                key[k_start:k_end].unsqueeze(0),
-                value[k_start:k_end].unsqueeze(0),
-                return_attn_probs=True,
-            )
-            cur_qo_out, cur_qo_lse = cur_qo_out.squeeze(0), cur_qo_lse.squeeze(0)
+
+            if _has_fa2:
+                cur_qo_out, cur_qo_lse, _ = _fa2_func(
+                    query[q_start:q_end].unsqueeze(0),
+                    key[k_start:k_end].unsqueeze(0),
+                    value[k_start:k_end].unsqueeze(0),
+                    return_attn_probs=True,
+                )
+                cur_qo_out, cur_qo_lse = cur_qo_out.squeeze(0), cur_qo_lse.squeeze(0)
+            else:
+                # SDPA fallback — no LSE available, use simple attention
+                q_chunk = query[q_start:q_end].unsqueeze(0).transpose(1, 2)
+                k_chunk = key[k_start:k_end].unsqueeze(0).transpose(1, 2)
+                v_chunk = value[k_start:k_end].unsqueeze(0).transpose(1, 2)
+                # Handle GQA: repeat KV heads to match query heads
+                num_q_heads = q_chunk.shape[1]
+                num_kv_heads = k_chunk.shape[1]
+                if num_q_heads != num_kv_heads:
+                    repeat_factor = num_q_heads // num_kv_heads
+                    k_chunk = k_chunk.repeat_interleave(repeat_factor, dim=1)
+                    v_chunk = v_chunk.repeat_interleave(repeat_factor, dim=1)
+                cur_qo_out = torch.nn.functional.scaled_dot_product_attention(q_chunk, k_chunk, v_chunk)
+                cur_qo_out = cur_qo_out.transpose(1, 2).squeeze(0)
+                # Approximate LSE for correction: log(sum(exp(qk/sqrt(d))))
+                scale = query.shape[-1] ** -0.5
+                attn_weights = torch.matmul(
+                    q_chunk, k_chunk.transpose(-2, -1)
+                ) * scale
+                cur_qo_lse = torch.logsumexp(attn_weights, dim=-1).squeeze(0)
 
             if qo_out is None:
                 qo_out = cur_qo_out
@@ -515,7 +555,7 @@ def flash_attn_with_cp(q: torch.Tensor, k: torch.Tensor, v: torch.Tensor, cp_spl
         k = k.unsqueeze(0)
         v = v.unsqueeze(0)
 
-    self_attn_out = torch.ops.infra.flash_attn_func(q, k, v).squeeze(0)
+    self_attn_out = flash_attn_func(q, k, v).squeeze(0)
 
     if get_cp_world_size() > 1:
         self_attn_out = scatter_seqlen_gather_head(self_attn_out, cp_split_sizes, get_cp_group(), async_op=False)
@@ -546,7 +586,7 @@ def flex_flash_attn_with_cp(
     if get_cp_world_size() > 1:
         q, k, v = batch_scatter_head_gather_seqlen([q, k, v], cp_split_sizes, get_cp_group())
 
-    out, _ = torch.ops.infra.flex_flash_attn_func(q, k, v, q_ranges=q_ranges, k_ranges=k_ranges)
+    out, _ = flex_flash_attn_func(q, k, v, q_ranges=q_ranges, k_ranges=k_ranges)
 
     if get_cp_world_size() > 1:
         out = scatter_seqlen_gather_head(out, cp_split_sizes, get_cp_group(), async_op=False)

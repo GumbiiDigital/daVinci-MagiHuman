@@ -1,0 +1,136 @@
+================================================================================
+  PHASE 3 DASHBOARD — Generated 2026-03-26 11:06 UTC
+================================================================================
+
+STATUS: RUNNING (in tmux session 'phase3-gen')
+OUTPUT: ~/daVinci-MagiHuman/phase3_output_20260326_100332/
+
+────────────────────────────────────────────────────────────────────────────────
+  PROGRESS: 10/100 completed (10%) — 0 failures — 0 skipped
+────────────────────────────────────────────────────────────────────────────────
+
+  Video #11 currently generating: testimonial_hopeful__female_black_natural_01
+
+────────────────────────────────────────────────────────────────────────────────
+  GENERATION SPEED
+────────────────────────────────────────────────────────────────────────────────
+
+  Min:  341s (5m 41s) — testimonial_vulnerable__female_asian_bob_01
+  Max:  406s (6m 46s) — testimonial_angry__female_asian_bob_01
+  Avg:  374s (6m 14s)
+  Total elapsed: 56m 51s (started 10:03:32, last success 11:00:23)
+
+────────────────────────────────────────────────────────────────────────────────
+  ETA
+────────────────────────────────────────────────────────────────────────────────
+
+  Remaining: 90 videos
+  At avg 375s/video: ~33,750s = ~9h 23m remaining
+  Estimated completion: ~20:30 UTC (Mar 26)
+
+────────────────────────────────────────────────────────────────────────────────
+  FILE SIZE STATS (9 videos)
+────────────────────────────────────────────────────────────────────────────────
+
+  Smallest: 1,648,581 bytes (1,609 KB) — testimonial_angry__female_asian_bob_02
+  Largest:  1,935,566 bytes (1,890 KB) — testimonial_relapse_honest__female_asian_bob_01
+  Average:  1,804,964 bytes (1,763 KB)
+  Total:    16,244,677 bytes (15.5 MB)
+
+  8s videos avg: 1,897,757 bytes (1,853 KB) — 5 videos
+  7s videos avg: 1,671,495 bytes (1,632 KB) — 4 videos
+  (Expected: longer videos = larger files. Confirmed.)
+
+────────────────────────────────────────────────────────────────────────────────
+  PER-FACE COMPLETION STATUS (2/20 faces done)
+────────────────────────────────────────────────────────────────────────────────
+
+  [5/5] female_asian_bob_01     COMPLETE
+  [5/5] female_asian_bob_02     COMPLETE
+  [0/5] female_black_natural_01 IN PROGRESS (generating #1)
+  [0/5] female_black_natural_02 PENDING
+  [0/5] female_blonde_freckles_01 PENDING
+  [0/5] female_blonde_wavy_01   PENDING
+  [0/5] female_latina_curly_01  PENDING
+  [0/5] female_latina_wavy_01   PENDING
+  [0/5] female_latina_wavy_02   PENDING
+  [0/5] female_mixed_curly_01   PENDING
+  [0/5] male_asian_medium_01    PENDING
+  [0/5] male_asian_medium_02    PENDING
+  [0/5] male_black_fade_01      PENDING
+  [0/5] male_black_fade_02      PENDING
+  [0/5] male_brown_blue_01      PENDING
+  [0/5] male_brown_blue_02      PENDING
+  [0/5] male_mediterranean_01   PENDING
+  [0/5] male_redhead_freckles_01 PENDING
+  [0/5] male_redhead_freckles_02 PENDING
+  [0/5] male_south_asian_01     PENDING
+
+────────────────────────────────────────────────────────────────────────────────
+  PER-PROMPT COMPLETION STATUS
+────────────────────────────────────────────────────────────────────────────────
+
+  testimonial_hopeful        2/20 faces done
+  testimonial_angry          2/20 faces done
+  testimonial_relieved       2/20 faces done
+  testimonial_vulnerable     2/20 faces done
+  testimonial_relapse_honest 2/20 faces done
+
+────────────────────────────────────────────────────────────────────────────────
+  PER-VIDEO DETAIL (completed)
+────────────────────────────────────────────────────────────────────────────────
+
+  #  Video ID                                           Face             Dur   Size(KB) GenTime
+  1  testimonial_hopeful__female_asian_bob_01_seed42     asian_bob_01    8.04s  1873    377s
+  2  testimonial_angry__female_asian_bob_01_seed42       asian_bob_01    7.04s  1643    406s
+  3  testimonial_relieved__female_asian_bob_01_seed42    asian_bob_01    7.04s  1650    381s
+  4  testimonial_vulnerable__female_asian_bob_01_seed42  asian_bob_01    8.04s  1798    341s
+  5  testimonial_relapse_honest__female_asian_bob_01     asian_bob_01    8.04s  1890    378s
+  6  testimonial_hopeful__female_asian_bob_02_seed42     asian_bob_02    8.04s  1887    398s
+  7  testimonial_angry__female_asian_bob_02_seed42       asian_bob_02    7.04s  1609    356s
+  8  testimonial_relieved__female_asian_bob_02_seed42    asian_bob_02    7.04s  1626    372s
+  9  testimonial_vulnerable__female_asian_bob_02_seed42  asian_bob_02    8.04s  1816    356s
+
+────────────────────────────────────────────────────────────────────────────────
+  FACE COMPARISON (preliminary — only 2 faces so far)
+────────────────────────────────────────────────────────────────────────────────
+
+  female_asian_bob_01: avg 1,771 KB, avg gen time 377s
+  female_asian_bob_02: avg 1,735 KB, avg gen time 371s
+
+  bob_01 produces slightly larger files (2% more). Too early to draw conclusions.
+
+────────────────────────────────────────────────────────────────────────────────
+  PROMPT COMPARISON (across both faces)
+────────────────────────────────────────────────────────────────────────────────
+
+  testimonial_relapse_honest:  avg 1,890 KB  (8s, complex emotion — highest)
+  testimonial_hopeful:         avg 1,880 KB  (8s)
+  testimonial_vulnerable:      avg 1,807 KB  (8s)
+  testimonial_angry:           avg 1,626 KB  (7s)
+  testimonial_relieved:        avg 1,638 KB  (7s)
+
+  Pattern: 8s prompts produce ~14% larger files than 7s prompts.
+  Among 8s: relapse_honest > hopeful > vulnerable (emotional complexity = file size?)
+
+────────────────────────────────────────────────────────────────────────────────
+  ANOMALIES / CONCERNS
+────────────────────────────────────────────────────────────────────────────────
+
+  * NONE — 0 failures, 100% success rate so far
+  * All video durations match prompt specs (7s->7.04s, 8s->8.04s)
+  * Gen speed is very consistent (341-406s, stddev ~20s)
+  * 3 earlier phase3_output dirs (095402, 095527, 095905) had 0-2 results each
+    — likely false starts before the current run stabilized
+  * ETA ~9.5 hours is long but expected for 91 remaining at ~6min/vid on GB10
+
+────────────────────────────────────────────────────────────────────────────────
+  ACCESS
+────────────────────────────────────────────────────────────────────────────────
+
+  HTTP: http://192.168.4.31:9090/phase3_all_faces/
+  Local: ~/daVinci-MagiHuman/phase3_output_20260326_100332/
+  Symlink: /tmp/davinci_serve/phase3_all_faces -> output dir (auto-refreshes)
+  Spark2 scoring: /tmp/score_all/phase3/ (rsynced)
+
+================================================================================
